@@ -2,12 +2,51 @@ package smart.tests;
 
 import java.io.IOException;
 
+import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.inf.ArgumentParser;
+import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import net.sourceforge.argparse4j.inf.Namespace;
 import smart.tests.results.lib.ResultMetrics;
 
 public class EntryPoint {
+	
+	private static final String SAVE_PRIORITIES = "save-default-priorities";
+	private static final String SET_TEST_STATUS = "set-test-status";
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		boolean jenkinsJobSuccessStatus = true;
+		int exitCode = 0;
+		ArgumentParser parser = ArgumentParsers.newFor("SmartTestPlugin").build()
+                .defaultHelp(true)
+                .description("Smart plugin for CI/CD.");
+		parser.addArgument("actionName").metavar("ACTIONNAME")
+        		.type(String.class).choices(SAVE_PRIORITIES, SET_TEST_STATUS)
+        		.help("Action to invoke");
+		parser.addArgument("-f", "--file").metavar("TESTJAR")
+        		.dest("testjar").type(String.class)
+        		.help("Path to the test jar containing all the TestNG test cases");
+		Namespace res = null;
+        try {
+            res = parser.parseArgs(args);
+        } catch (ArgumentParserException e) {
+            parser.handleError(e);
+            exitCode = 1;
+        } 
+        if(exitCode == 0){
+        	switch (res.getString("actionName")) {
+	            case SAVE_PRIORITIES:
+	                TestMethods.setPriorities(res.getString("testjar"));
+	                break;
+	            case SET_TEST_STATUS:
+	            	break;
+	            default:
+	            	exitCode = 1;
+        	}
+        System.exit(exitCode);
+        }
+	}
+        
+        
+		/*boolean jenkinsJobSuccessStatus = true;
 		if (args.length == 0) {
 			System.out.println("Usage: ListTestMethods <Test Jar File>");
 			return;
@@ -41,7 +80,6 @@ public class EntryPoint {
 		if(jenkinsJobSuccessStatus)
 			System.out.println("Jenkins job will pass !!");
 		else
-			System.out.println("Jenkins job will fail :(");
-	}
+			System.out.println("Jenkins job will fail :(");*/
 
 }

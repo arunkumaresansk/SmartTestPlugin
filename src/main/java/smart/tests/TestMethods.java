@@ -30,9 +30,9 @@ public class TestMethods {
 	private static Map<Integer, List<String>> methodPriorities = new HashMap<Integer, List<String>>();
 	private static final String CLASS = ".class";
 	
-	public static Map<Integer, List<String>> getPriorities(String[] args) throws JsonParseException, JsonMappingException, IOException {
+	public static Map<Integer, List<String>> getPriorities(String testJarFile) throws JsonParseException, JsonMappingException, IOException {
 		StringBuilder jsonAsString = new StringBuilder();
-		Scanner scanner = new Scanner(new File("/Users/Shared/Jenkins/Home/workspace/Test1/testMethods.json"));
+		Scanner scanner = new Scanner(new File(testJarFile));
 		while(scanner.hasNextLine())
 			jsonAsString.append(scanner.nextLine());
 		scanner.close();
@@ -54,27 +54,29 @@ public class TestMethods {
 	}
 	
 	public static void setPriorities(String pathToJar) throws ClassNotFoundException, IOException{
+		ClassMethods classMethods = null;
 		JarFile jarFile = new JarFile(pathToJar);
 		Enumeration<JarEntry> e = jarFile.entries();
 		URL[] urls = { new URL("jar:file:" + pathToJar +"!/") };
-		URLClassLoader cl = URLClassLoader.newInstance(urls);
+		URLClassLoader classLoader = URLClassLoader.newInstance(urls);
 		List<ClassMethods> allClassMethods = new ArrayList<ClassMethods>();
-		ClassMethods classMethods = new ClassMethods();
+
 		
 		while (e.hasMoreElements()) {
 		    JarEntry jarEntry = e.nextElement();
 		    if(!jarEntry.isDirectory() && jarEntry.getName().endsWith(CLASS)){
+		    	classMethods = new ClassMethods();
 		        String className = jarEntry.getName().substring(0, jarEntry.getName().length()-CLASS.length());
 			    className = className.replace('/', '.');
 			    classMethods.setName(className);
-			    Class<?> c = cl.loadClass(className);
+			    Class<?> clazz = classLoader.loadClass(className);
 			    List<MethodPriority> methods = new ArrayList<MethodPriority>();
-			    for(Method s : c.getDeclaredMethods()){
-			    	if(s.getAnnotation(org.testng.annotations.Test.class) != null){
-			    		MethodPriority method = new MethodPriority();
-			    		method.setName(s.getName());
-			    		method.setPriority(0);
-			    		methods.add(method);
+			    for(Method method : clazz.getDeclaredMethods()){
+			    	if(method.getAnnotation(org.testng.annotations.Test.class) != null){
+			    		MethodPriority mPriority = new MethodPriority();
+			    		mPriority.setName(method.getName());
+			    		mPriority.setPriority(0);
+			    		methods.add(mPriority);
 			    	}
 			    }
 			    classMethods.setMethods(methods);
