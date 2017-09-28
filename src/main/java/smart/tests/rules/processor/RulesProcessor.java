@@ -21,19 +21,24 @@ public class RulesProcessor {
 	public static void process(ControlRules controlRules, ResultMetrics result,
 			Map<Integer, List<String>> testPriorities) throws JsonGenerationException, JsonMappingException, IOException{
 		boolean jenkinsJobSuccessStatus = true;
+		boolean isPrioritySucessful = true;
 		if (Math.round(result.getPassed() * 100 / result.getTotal()) > controlRules.getPassPercentage())
 			jenkinsJobSuccessStatus = false;
 		else {
 			for (int key : testPriorities.keySet()) {
-				if (key < controlRules.getPriorityThreshold()) {
-					System.out.println("Validating priority: " + key);
-					for (String testMethod : testPriorities.get(key)) {
-						if (result.getFailedTests().contains(testMethod)) {
-							jenkinsJobSuccessStatus = false;
-							break;
-						}
+				isPrioritySucessful = true;
+				for (String testMethod : testPriorities.get(key)) {
+					if (result.getFailedTests().contains(testMethod) 
+							&& (key <= controlRules.getPriorityThreshold())) {
+						jenkinsJobSuccessStatus = false;
+						isPrioritySucessful = false;
+						break;
 					}
 				}
+				if(isPrioritySucessful)
+					System.out.println("Validation of P" + key + "tests: PASSED");
+				else
+					System.out.println("Validation of P" + key + "tests: FAILED");
 			}
 		}
 		result.setJobStatus(jenkinsJobSuccessStatus);
