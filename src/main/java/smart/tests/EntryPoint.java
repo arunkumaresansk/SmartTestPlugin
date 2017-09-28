@@ -11,7 +11,7 @@ import smart.tests.rules.processor.RulesProcessor;
 public class EntryPoint {
 
 	private static final String SAVE_PRIORITIES = "save-default-priorities";
-	private static final String SET_TEST_STATUS = "set-test-status";
+	private static final String SET_JOB_STATUS = "set-job-status";
 	
 	
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
@@ -19,7 +19,7 @@ public class EntryPoint {
 		ArgumentParser parser = ArgumentParsers.newFor("SmartTestPlugin").build().defaultHelp(true)
 				.description("Smart plugin for CI/CD.");
 		parser.addArgument("actionName").metavar("ACTIONNAME").type(String.class)
-				.choices(SAVE_PRIORITIES, SET_TEST_STATUS).help("Action to invoke");
+				.choices(SAVE_PRIORITIES, SET_JOB_STATUS).help("Action to invoke");
 		parser.addArgument("-j", "--jar").metavar("TESTJAR").dest("testjar").type(String.class)
 				.help("Path to the test jar containing all the TestNG test cases");
 		parser.addArgument("-p", "--priorities").metavar("PRIORITYJSON").dest("priorityJson").type(String.class)
@@ -40,7 +40,7 @@ public class EntryPoint {
 			case SAVE_PRIORITIES:
 				TestMethods.setPriorities(namespace.getString("testjar"));
 				break;
-			case SET_TEST_STATUS:
+			case SET_JOB_STATUS:
 				RulesProcessor.process(FilterRules.get(namespace.getString("rules")), 
 						TestResults.parse(namespace.getString("testResult")), 
 						TestMethods.getPriorities(namespace.getString("priorityJson")));

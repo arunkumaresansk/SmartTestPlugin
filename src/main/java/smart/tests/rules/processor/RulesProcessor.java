@@ -15,32 +15,36 @@ import smart.tests.results.lib.ResultMetrics;
 import smart.tests.rules.lib.ControlRules;
 
 public class RulesProcessor {
-	
+
 	private static ObjectMapper mapper = new ObjectMapper();
-	
+
 	public static void process(ControlRules controlRules, ResultMetrics result,
 			Map<Integer, List<String>> testPriorities) throws JsonGenerationException, JsonMappingException, IOException{
 		boolean jenkinsJobSuccessStatus = true;
 		boolean isPrioritySucessful = true;
-		if (Math.round(result.getPassed() * 100 / result.getTotal()) > controlRules.getPassPercentage())
+		int testSuccessPercentage = Math.round(result.getPassed() * 100 / result.getTotal());
+		if (testSuccessPercentage < controlRules.getPassPercentage()){
+			System.out.println("Validation rule for Success% FAILED: " + testSuccessPercentage + "%");
 			jenkinsJobSuccessStatus = false;
-		else {
-			for (int key : testPriorities.keySet()) {
-				isPrioritySucessful = true;
-				for (String testMethod : testPriorities.get(key)) {
-					if (result.getFailedTests().contains(testMethod) 
-							&& (key <= controlRules.getPriorityThreshold())) {
+		}else
+			System.out.println("Validation rule for Success% PASSED: " + testSuccessPercentage + "%");
+		for (int key : testPriorities.keySet()) {
+			isPrioritySucessful = true;
+			for (String testMethod : testPriorities.get(key)) {
+				if (result.getFailedTests().contains(testMethod)) {
+					isPrioritySucessful = false;
+					if(key <= controlRules.getPriorityThreshold()){
 						jenkinsJobSuccessStatus = false;
-						isPrioritySucessful = false;
 						break;
 					}
 				}
-				if(isPrioritySucessful)
-					System.out.println("Validation of P" + key + "tests: PASSED");
-				else
-					System.out.println("Validation of P" + key + "tests: FAILED");
 			}
+			if(isPrioritySucessful)
+				System.out.println("Validation rule for P" + key + " tests: PASSED");
+			else
+				System.out.println("Validation rule for P" + key + " tests: FAILED");
 		}
+		System.out.println("Overall Job status based on rules: " + (jenkinsJobSuccessStatus ? "PASSED" : "FAILED"));
 		result.setJobStatus(jenkinsJobSuccessStatus);
 		ObjectWriter jsonWriter = mapper.writer(new DefaultPrettyPrinter());
 		jsonWriter.writeValue(new File("results.json"), result);
