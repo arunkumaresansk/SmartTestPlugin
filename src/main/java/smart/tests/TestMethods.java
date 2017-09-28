@@ -30,9 +30,9 @@ public class TestMethods {
 	private static Map<Integer, List<String>> methodPriorities = new HashMap<Integer, List<String>>();
 	private static final String CLASS = ".class";
 	
-	public static Map<Integer, List<String>> getPriorities(String testJarFile) throws JsonParseException, JsonMappingException, IOException {
+	public static Map<Integer, List<String>> getPriorities(String testPriorities) throws JsonParseException, JsonMappingException, IOException {
 		StringBuilder jsonAsString = new StringBuilder();
-		Scanner scanner = new Scanner(new File(testJarFile));
+		Scanner scanner = new Scanner(new File(testPriorities));
 		while(scanner.hasNextLine())
 			jsonAsString.append(scanner.nextLine());
 		scanner.close();

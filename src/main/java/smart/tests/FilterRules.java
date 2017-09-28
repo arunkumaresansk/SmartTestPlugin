@@ -14,9 +14,9 @@ public class FilterRules {
 	
 	private static ObjectMapper mapper = new ObjectMapper();
 	
-	public static ControlRules get () throws JsonParseException, JsonMappingException, IOException {
+	public static ControlRules get(String controlJson) throws JsonParseException, JsonMappingException, IOException {
 		StringBuilder jsonAsString = new StringBuilder();
-		Scanner scanner = new Scanner(new File("/Users/Shared/Jenkins/Home/workspace/Test1/controlRules.json"));
+		Scanner scanner = new Scanner(new File(controlJson));
 		while(scanner.hasNextLine())
 			jsonAsString.append(scanner.nextLine());
 		scanner.close();

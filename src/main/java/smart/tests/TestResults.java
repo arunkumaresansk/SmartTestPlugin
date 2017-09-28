@@ -26,12 +26,12 @@ public class TestResults {
 	private static final String PASSED = "PASS";
 	private static final String FAILED = "FAIL";
 	
-	public static ResultMetrics parse(){
+	public static ResultMetrics parse(String testResultXml){
 		ObjectMapper objectMapper = new XmlMapper();
 		TestNGResult testngResult = null;
 		try {
 			testngResult = objectMapper.readValue(
-			        StringUtils.toEncodedString(Files.readAllBytes(Paths.get("/Users/akumaresan1/innovation/AWSMigration/target/alternateLocation/test-output/testng-results.xml")), StandardCharsets.UTF_8),
+			        StringUtils.toEncodedString(Files.readAllBytes(Paths.get(testResultXml)), StandardCharsets.UTF_8),
 			        TestNGResult.class);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
