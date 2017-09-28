@@ -10,7 +10,7 @@ public class ResultMetrics {
 	private int skipped;
 	private List<String> passedTests;
 	private List<String> failedTests;
-	private boolean isJobSuccess;
+	private boolean jobStatus;
 
 	public ResultMetrics(int total, int passed, int failed, int skipped, List<String> passedTests,
 			List<String> failedTests) {
@@ -70,12 +70,12 @@ public class ResultMetrics {
 		this.failedTests = failedTests;
 	}
 
-	public boolean isJobSuccess() {
-		return isJobSuccess;
+	public boolean isJobStatus() {
+		return jobStatus;
 	}
 
-	public void setJobSuccess(boolean isJobSuccess) {
-		this.isJobSuccess = isJobSuccess;
+	public void setJobStatus(boolean jobStatus) {
+		this.jobStatus = jobStatus;
 	}
 	
 }

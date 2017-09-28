@@ -68,7 +68,7 @@ public class EntryPoint {
 						}
 					}
 				}
-				result.setJobSuccess(jenkinsJobSuccessStatus);
+				result.setJobStatus(jenkinsJobSuccessStatus);
 				ObjectWriter jsonWriter = mapper.writer(new DefaultPrettyPrinter());
 				jsonWriter.writeValue(new File("results.json"), result);
 				break;
