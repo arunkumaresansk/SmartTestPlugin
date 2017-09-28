@@ -2,6 +2,8 @@ package smart.tests.results.lib;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ResultMetrics {
 
 	private int total;
@@ -10,6 +12,8 @@ public class ResultMetrics {
 	private int skipped;
 	private List<String> passedTests;
 	private List<String> failedTests;
+	@JsonProperty("isJobSuccessful")
+	private boolean isJobSuccess;
 
 	public ResultMetrics(int total, int passed, int failed, int skipped, List<String> passedTests,
 			List<String> failedTests) {
@@ -69,4 +73,12 @@ public class ResultMetrics {
 		this.failedTests = failedTests;
 	}
 
+	public boolean isJobSuccess() {
+		return isJobSuccess;
+	}
+
+	public void setJobSuccess(boolean isJobSuccess) {
+		this.isJobSuccess = isJobSuccess;
+	}
+	
 }

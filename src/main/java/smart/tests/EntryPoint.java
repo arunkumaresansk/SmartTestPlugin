@@ -1,8 +1,13 @@
 package smart.tests;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
@@ -15,7 +20,8 @@ public class EntryPoint {
 
 	private static final String SAVE_PRIORITIES = "save-default-priorities";
 	private static final String SET_TEST_STATUS = "set-test-status";
-
+	private static ObjectMapper mapper = new ObjectMapper();
+	
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		int exitCode = 0;
 		ArgumentParser parser = ArgumentParsers.newFor("SmartTestPlugin").build().defaultHelp(true)
@@ -45,16 +51,16 @@ public class EntryPoint {
 			case SET_TEST_STATUS:
 				boolean jenkinsJobSuccessStatus = true;
 				Map<Integer, List<String>> testPriorities = TestMethods.getPriorities(namespace.getString("priorityJson"));
-				ResultMetrics metrics = TestResults.parse(namespace.getString("testResult"));
+				ResultMetrics result = TestResults.parse(namespace.getString("testResult"));
 				ControlRules controlRules = FilterRules.get(namespace.getString("rules"));
-				if (Math.round(metrics.getPassed() * 100 / metrics.getTotal()) < controlRules.getPassPercentage())
+				if (Math.round(result.getPassed() * 100 / result.getTotal()) < controlRules.getPassPercentage())
 					jenkinsJobSuccessStatus = false;
 				else {
 					for (int key : testPriorities.keySet()) {
 						if (key < controlRules.getPriorityThreshold()) {
 							System.out.println("Validating priority: " + key);
 							for (String testMethod : testPriorities.get(key)) {
-								if (metrics.getFailedTests().contains(testMethod)) {
+								if (result.getFailedTests().contains(testMethod)) {
 									jenkinsJobSuccessStatus = false;
 									break;
 								}
@@ -62,10 +68,9 @@ public class EntryPoint {
 						}
 					}
 				}
-				if (jenkinsJobSuccessStatus)
-					System.out.println("Jenkins job will pass !!");
-				else
-					System.out.println("Jenkins job will fail :(");
+				result.setJobSuccess(jenkinsJobSuccessStatus);
+				ObjectWriter jsonWriter = mapper.writer(new DefaultPrettyPrinter());
+				jsonWriter.writeValue(new File("results.json"), result);
 				break;
 			default:
 				exitCode = 1;
