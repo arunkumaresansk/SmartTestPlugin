@@ -15,7 +15,6 @@ public class EntryPoint {
 	
 	
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		int exitCode = 0;
 		ArgumentParser parser = ArgumentParsers.newFor("SmartTestPlugin").build().defaultHelp(true)
 				.description("Smart plugin for CI/CD.");
 		parser.addArgument("actionName").metavar("ACTIONNAME").type(String.class)
@@ -31,11 +30,6 @@ public class EntryPoint {
 		Namespace namespace = null;
 		try {
 			namespace = parser.parseArgs(args);
-		} catch (ArgumentParserException e) {
-			parser.handleError(e);
-			exitCode = 1;
-		}
-		if (exitCode == 0) {
 			switch (namespace.getString("actionName")) {
 			case SAVE_PRIORITIES:
 				TestMethods.setPriorities(namespace.getString("testjar"));
@@ -46,9 +40,10 @@ public class EntryPoint {
 						TestMethods.getPriorities(namespace.getString("priorityJson")));
 				break;
 			default:
-				exitCode = 1;
+				break;
 			}
-			System.exit(exitCode);
+		} catch (ArgumentParserException e) {
+			parser.handleError(e);
 		}
 	}
 

@@ -23,6 +23,10 @@ public class RulesProcessor {
 		boolean jenkinsJobSuccessStatus = true;
 		boolean isPrioritySucessful = true;
 		int testSuccessPercentage = Math.round(result.getPassed() * 100 / result.getTotal());
+		System.out.println("-----------------------RULES-----------------------");
+		System.out.println("Expected Success Percentage - " + controlRules.getPassPercentage() + "%");
+		System.out.println("Test Priority Threshold - P" + controlRules.getPriorityThreshold());
+		System.out.println("---------------------------------------------------");
 		if (testSuccessPercentage < controlRules.getPassPercentage()){
 			System.out.println("Validation rule for Success% FAILED: " + testSuccessPercentage + "%");
 			jenkinsJobSuccessStatus = false;
