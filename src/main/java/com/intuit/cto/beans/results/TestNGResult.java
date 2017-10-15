@@ -1,10 +1,11 @@
 package com.intuit.cto.beans.results;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 @JacksonXmlRootElement(localName = "testng-results")
 public class TestNGResult {
 
@@ -18,10 +19,6 @@ public class TestNGResult {
 	private int passed;
 	@JacksonXmlProperty(localName = "total", isAttribute = true)
 	private int total;
-
-	@JsonProperty("reporter-output")
-	@JacksonXmlElementWrapper(localName = "reporter-output", useWrapping = false)
-	private ReporterOutput reporterOutput;
 	@JacksonXmlElementWrapper(localName = "suite", useWrapping = false)
 	private Suite suite;
 	
@@ -67,14 +64,6 @@ public class TestNGResult {
 
 	public void setTotal(int total) {
 		this.total = total;
-	}
-
-	public ReporterOutput getReporterOutput() {
-		return reporterOutput;
-	}
-
-	public void setReporterOutput(ReporterOutput reporterOutput) {
-		this.reporterOutput = reporterOutput;
 	}
 
 	public Suite getSuite() {

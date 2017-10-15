@@ -10,7 +10,6 @@ import com.intuit.cto.utilties.PriorityListConverter;
 
 public class PriorityProcessor {
 
-	private boolean isPriorityDefined = false;
 	private static Map<String, Map<String, Integer>> allTestPriorities;
 	private static PriorityProcessor priorityProcessor = new PriorityProcessor();
 	private final static Logger logger = Logger.getLogger(PriorityProcessor.class);
@@ -20,9 +19,15 @@ public class PriorityProcessor {
 	}
 
 	public void setBasePriorities(PriorityList priorityList) {
-		if (priorityList == null)
-			setPriorityDefined(false);
 		allTestPriorities = PriorityListConverter.toMap(priorityList);
+	}
+	
+	public int getPriority(String className, String methodName){
+		return allTestPriorities.get(className).get(methodName);
+	}
+
+	public Map<String, Map<String, Integer>> getPriorities() {
+		return allTestPriorities;
 	}
 
 	public void addPriority(String className, String methodName) {
@@ -39,18 +44,6 @@ public class PriorityProcessor {
 				testPriorities.put(methodName, 0);
 			}
 		}
-	}
-
-	public Map<String, Map<String, Integer>> getPriorities() {
-		return allTestPriorities;
-	}
-
-	public boolean isPriorityDefined() {
-		return isPriorityDefined;
-	}
-
-	public void setPriorityDefined(boolean isPriorityDefined) {
-		this.isPriorityDefined = isPriorityDefined;
 	}
 
 	private PriorityProcessor() {

@@ -9,20 +9,10 @@ public class ResultMetrics {
 	private int failed;
 	private int ignored;
 	private int skipped;
-	private List<String> passedTests;
+	private List<String> breachedTests;
 	private List<String> failedTests;
+	private List<String> rulesViolated;
 	private boolean jobStatus;
-
-	public ResultMetrics(int total, int passed, int failed, int ignored, int skipped, List<String> passedTests,
-			List<String> failedTests) {
-		this.total = total;
-		this.passed = passed;
-		this.failed = failed;
-		this.ignored = ignored;
-		this.skipped = skipped;
-		this.passedTests = passedTests;
-		this.failedTests = failedTests;
-	}
 
 	public int getTotal() {
 		return total;
@@ -55,7 +45,7 @@ public class ResultMetrics {
 	public void setIgnored(int ignored) {
 		this.ignored = ignored;
 	}
-	
+
 	public int getSkipped() {
 		return skipped;
 	}
@@ -64,12 +54,12 @@ public class ResultMetrics {
 		this.skipped = skipped;
 	}
 
-	public List<String> getPassedTests() {
-		return passedTests;
+	public List<String> getBreachedTests() {
+		return breachedTests;
 	}
 
-	public void setPassedTests(List<String> passedTests) {
-		this.passedTests = passedTests;
+	public void setBreachedTests(List<String> breachedTests) {
+		this.breachedTests = breachedTests;
 	}
 
 	public List<String> getFailedTests() {
@@ -78,6 +68,14 @@ public class ResultMetrics {
 
 	public void setFailedTests(List<String> failedTests) {
 		this.failedTests = failedTests;
+	}
+
+	public List<String> getRulesViolated() {
+		return rulesViolated;
+	}
+
+	public void setRulesViolated(List<String> rulesViolated) {
+		this.rulesViolated = rulesViolated;
 	}
 
 	public boolean isJobStatus() {
