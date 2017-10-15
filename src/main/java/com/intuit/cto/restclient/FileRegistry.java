@@ -25,17 +25,17 @@ public class FileRegistry {
 	public PriorityList getPriorities(String projectName) {
 		logger.info("Getting priority for the project - " + projectName);
 		Response jsonResponse = postRequest.when().get(config.getPrioritiesURI());
-		return JsonSerializer.get(jsonResponse.getBody().asString(), PriorityList.class);
+		return JsonSerializer.toObject(jsonResponse.getBody().asString(), PriorityList.class);
 	}
 	
 	public void setPriorities(PriorityList priorityList) {
-		System.out.println(JsonSerializer.get(priorityList, PriorityList.class));
+		System.out.println(JsonSerializer.toString(priorityList, PriorityList.class));
 	}
 
 	public ControlRules getRules(String projectName) {
 		logger.info("Getting priority for the project - " + projectName);
 		Response jsonResponse = postRequest.when().get(config.getRulesURI());
-		return JsonSerializer.get(jsonResponse.getBody().asString(), ControlRules.class);
+		return JsonSerializer.toObject(jsonResponse.getBody().asString(), ControlRules.class);
 	}
 
 }

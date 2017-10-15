@@ -28,7 +28,7 @@ public class PriorityProcessor {
 	public void addPriority(String className, String methodName) {
 		Map<String, Integer> testPriorities = allTestPriorities.get(className);
 		if (testPriorities == null) {
-			logger.info("Adding priority for the class: " + className);
+			logger.info("Adding class to the priority list: " + className);
 			testPriorities = new HashMap<String, Integer>();
 			testPriorities.put(methodName, 0);
 			allTestPriorities.put(className, testPriorities);
@@ -56,5 +56,5 @@ public class PriorityProcessor {
 	private PriorityProcessor() {
 
 	}
-
+	
 }

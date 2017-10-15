@@ -9,6 +9,10 @@ public class TestsInClass {
 	@JsonProperty("class")
 	private String name;
 	private List<TestPriority> methods;
+	
+	public TestsInClass(){
+		
+	}
 
 	public TestsInClass(String name, List<TestPriority> methods) {
 		this.name = name;

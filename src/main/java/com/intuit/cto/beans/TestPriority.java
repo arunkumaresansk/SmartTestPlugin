@@ -4,6 +4,10 @@ public class TestPriority {
 
 	private String name;
 	private int priority;
+	
+	public TestPriority(){
+		
+	}
 
 	public TestPriority(String name, int priority) {
 		this.name = name;

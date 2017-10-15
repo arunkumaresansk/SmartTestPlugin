@@ -7,12 +7,12 @@ public class Groups {
 
 	private String name;
 	
-	public Groups(String name) {
-		this.name = name;
-	}
-	
 	public Groups(){
 		
+	}
+
+	public Groups(String name) {
+		this.name = name;
 	}
 
 	public String getName() {

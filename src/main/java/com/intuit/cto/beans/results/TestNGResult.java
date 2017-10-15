@@ -12,6 +12,8 @@ public class TestNGResult {
 	private int skipped;
 	@JacksonXmlProperty(localName = "failed", isAttribute = true)
 	private int failed;
+	@JacksonXmlProperty(localName = "ignored", isAttribute = true)
+	private int ignored;
 	@JacksonXmlProperty(localName = "passed", isAttribute = true)
 	private int passed;
 	@JacksonXmlProperty(localName = "total", isAttribute = true)
@@ -25,16 +27,6 @@ public class TestNGResult {
 	
 	public TestNGResult(){
 		
-	}
-
-	public TestNGResult(int skipped, int failed, int passed, int total, ReporterOutput reporterOutput, Suite suite) {
-		super();
-		this.skipped = skipped;
-		this.failed = failed;
-		this.passed = passed;
-		this.total = total;
-		this.reporterOutput = reporterOutput;
-		this.suite = suite;
 	}
 
 	public int getSkipped() {
@@ -53,6 +45,14 @@ public class TestNGResult {
 		this.failed = failed;
 	}
 
+	public int getIgnored() {
+		return ignored;
+	}
+
+	public void setIgnored(int ignored) {
+		this.ignored = ignored;
+	}
+	
 	public int getPassed() {
 		return passed;
 	}

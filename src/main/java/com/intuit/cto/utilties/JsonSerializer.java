@@ -12,7 +12,7 @@ public class JsonSerializer {
 	private static ObjectMapper mapper = new ObjectMapper();
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T get(String jsonAsString, Class<T> clazz) {
+	public static <T> T toObject(String jsonAsString, Class<T> clazz) {
 		T t = null;
 		try {
 			t = (T) mapper.readValue(jsonAsString, Class.forName(clazz.getName()));
@@ -29,7 +29,7 @@ public class JsonSerializer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> String get(Object obj, Class<T> clazz) {
+	public static <T> String toString(Object obj, Class<T> clazz) {
 		String jsonAsString = null;
 		T t = (T) obj;
 		try {

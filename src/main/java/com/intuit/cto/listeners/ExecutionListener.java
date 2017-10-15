@@ -7,6 +7,7 @@ import com.intuit.cto.beans.PriorityList;
 import com.intuit.cto.beans.input.InstanceConfig;
 import com.intuit.cto.beans.rules.ControlRules;
 import com.intuit.cto.processors.PriorityProcessor;
+import com.intuit.cto.processors.ResultProcessor;
 import com.intuit.cto.restclient.FileRegistry;
 import com.intuit.cto.utilties.PriorityListConverter;
 
@@ -16,6 +17,7 @@ public class ExecutionListener implements IExecutionListener {
 	private static final String PROJECT_PRIORITIES = "project.priority";
 	private static final String PROJECT_RULES = "project.rules";
 	PriorityProcessor priorityProcessor = PriorityProcessor.getInstance();
+	ResultProcessor resultProcessor = ResultProcessor.getInstance();
 	private final static Logger logger = Logger.getLogger(ExecutionListener.class);
 	
 	@Override
@@ -23,9 +25,8 @@ public class ExecutionListener implements IExecutionListener {
 		InstanceConfig config = new InstanceConfig();
 		registry = new FileRegistry(config);
 		PriorityList priorityList = registry.getPriorities(System.getProperty(PROJECT_PRIORITIES));
-		priorityList = null;
-		priorityProcessor.setBasePriorities(priorityList);
 		ControlRules rules = registry.getRules(System.getProperty(PROJECT_RULES));
+		priorityProcessor.setBasePriorities(priorityList);
 		if(rules == null){
 			logger.error("There are no rules set for this project. Please set the rules before proceeding...");
 			logger.error("Aborting the test Execution");
@@ -36,11 +37,7 @@ public class ExecutionListener implements IExecutionListener {
 	@Override
 	public void onExecutionFinish() {
 		registry.setPriorities(PriorityListConverter.toList(priorityProcessor.getPriorities()));
-	}
-	
-	public static void main(String[] args){
-		ExecutionListener el = new ExecutionListener();
-		el.onExecutionStart();
+		resultProcessor.getMetrics();
 	}
 
 }

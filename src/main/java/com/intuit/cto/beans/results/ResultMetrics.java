@@ -7,16 +7,18 @@ public class ResultMetrics {
 	private int total;
 	private int passed;
 	private int failed;
+	private int ignored;
 	private int skipped;
 	private List<String> passedTests;
 	private List<String> failedTests;
 	private boolean jobStatus;
 
-	public ResultMetrics(int total, int passed, int failed, int skipped, List<String> passedTests,
+	public ResultMetrics(int total, int passed, int failed, int ignored, int skipped, List<String> passedTests,
 			List<String> failedTests) {
 		this.total = total;
 		this.passed = passed;
 		this.failed = failed;
+		this.ignored = ignored;
 		this.skipped = skipped;
 		this.passedTests = passedTests;
 		this.failedTests = failedTests;
@@ -46,6 +48,14 @@ public class ResultMetrics {
 		this.failed = failed;
 	}
 
+	public int getIgnored() {
+		return ignored;
+	}
+
+	public void setIgnored(int ignored) {
+		this.ignored = ignored;
+	}
+	
 	public int getSkipped() {
 		return skipped;
 	}
