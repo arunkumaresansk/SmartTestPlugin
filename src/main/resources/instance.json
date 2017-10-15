@@ -1,0 +1,7 @@
+{
+    "protocol": "http",
+    "fileServer":"localhost",
+    "port":"9090",
+    "priorityUri":"/configurator/methods",
+    "rulesUri":"/configurator/rules"
+}
