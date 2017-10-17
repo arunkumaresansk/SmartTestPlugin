@@ -68,6 +68,7 @@ public class ResultProcessor {
 		result.setRulesViolated(violatedRules);
 		result.setJobStatus(!rulesProcessor.isRuleBreached());
 		JsonSerializer.toFile(new File("results.json"), result, ResultMetrics.class);
+		if (!isExecutionCompleted) System.exit(1);
 	}
 
 	public void setExecutionCompleted(boolean isExecutionCompleted) {

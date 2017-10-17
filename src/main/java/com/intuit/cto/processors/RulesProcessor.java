@@ -8,6 +8,7 @@ public class RulesProcessor {
 	private static final String percentageRuleName = "passPercentage";
 	private static RulesProcessor rulesProcessor = new RulesProcessor();
 	private static ResultProcessor resultProcessor = ResultProcessor.getInstance();
+	private static PriorityProcessor priorityProcessor = PriorityProcessor.getInstance();
 	private boolean priorityRuleBreached = false, percentageRuleBreached = false;
 	private int priorityThreshold;
 	private int passThreshold;
@@ -31,9 +32,8 @@ public class RulesProcessor {
 		if (priority <= priorityThreshold){
 			resultProcessor.updateBreachedTests(method);
 			setPriorityRuleBreached();
-			if(abortOnFailure){
+			if(abortOnFailure && priorityProcessor.isBasePrioritiesDefined()){
 				resultProcessor.finalize();
-				System.exit(1);
 			}
 		}
 	}
