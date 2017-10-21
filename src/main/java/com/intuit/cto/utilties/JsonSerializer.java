@@ -51,7 +51,7 @@ public class JsonSerializer {
 		String jsonAsString = null;
 		T t = (T) obj;
 		try {
-			jsonAsString = mapper.writeValueAsString(t);
+			jsonAsString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(t);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

@@ -16,20 +16,9 @@ public class ResultProcessor {
 	private List<String> breachedTests = new ArrayList<String>();
 	private List<String> failedTests = new ArrayList<String>();
 	private List<String> violatedRules = new ArrayList<String>();
-	private boolean isExecutionCompleted = false;
-	private int executedSoFar = 0;
-	private int passedSoFar = 0;
 
 	public static ResultProcessor getInstance() {
 		return resultProcessor;
-	}
-
-	public void updateTotal() {
-		++executedSoFar;
-	}
-
-	public void updatePassed() {
-		++passedSoFar;
 	}
 
 	public void updateBreachedTests(String testCase) {
@@ -39,40 +28,26 @@ public class ResultProcessor {
 	public void updateFailedTests(String testCase) {
 		failedTests.add(testCase);
 	}
-	
+
 	public void updateViolatedRules(String ruleName) {
 		violatedRules.add(ruleName);
 	}
 
 	public void finalize() {
 		ResultMetrics result = new ResultMetrics();
-		if (isExecutionCompleted) {
-			TestNGResult testngResult = XMLSerializer
-					.toObject(System.getProperty("user.dir") + "/test-output/testng-results.xml", TestNGResult.class);
-			result.setTotal(testngResult.getTotal());
-			result.setPassed(testngResult.getPassed());
-			result.setFailed(testngResult.getFailed());
-			result.setSkipped(testngResult.getSkipped());
-			result.setIgnored(testngResult.getIgnored());
-			int passPercentage = Math.round(result.getPassed() * 100 / result.getTotal());
-			rulesProcessor.validatePercentageRule(passPercentage);
-		} else {
-			result.setTotal(executedSoFar);
-			result.setPassed(passedSoFar);
-			result.setFailed(executedSoFar - passedSoFar);
-			result.setSkipped(-1);
-			result.setIgnored(-1);
-		}
+		TestNGResult testngResult = XMLSerializer
+				.toObject(System.getProperty("user.dir") + "/test-output/testng-results.xml", TestNGResult.class);
+		result.setTotal(testngResult.getTotal());
+		result.setPassed(testngResult.getPassed());
+		result.setFailed(testngResult.getFailed());
+		result.setSkipped(testngResult.getSkipped());
+		result.setIgnored(testngResult.getIgnored());
 		result.setBreachedTests(breachedTests);
 		result.setFailedTests(failedTests);
 		result.setRulesViolated(violatedRules);
-		result.setJobStatus(!rulesProcessor.isRuleBreached());
-		JsonSerializer.toFile(new File("results.json"), result, ResultMetrics.class);
-		if (!isExecutionCompleted) System.exit(1);
-	}
-
-	public void setExecutionCompleted(boolean isExecutionCompleted) {
-		this.isExecutionCompleted = isExecutionCompleted;
+		rulesProcessor.validatePercentageRule(Math.round(testngResult.getPassed() * 100 / result.getTotal()));
+		result.setJobStatus((rulesProcessor.isRuleBreached() || rulesProcessor.isExecutionAborted()) ? false : true);
+		JsonSerializer.toFile(new File("result.json"), result, ResultMetrics.class);
 	}
 
 	private ResultProcessor() {

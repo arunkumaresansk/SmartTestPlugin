@@ -3,6 +3,7 @@ package com.intuit.cto.listeners;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
+import org.testng.SkipException;
 
 import com.intuit.cto.processors.PriorityProcessor;
 import com.intuit.cto.processors.ResultProcessor;
@@ -16,20 +17,20 @@ public class MethodListener implements IInvokedMethodListener {
 
 	@Override
 	public void beforeInvocation(IInvokedMethod method, ITestResult testResult) {
-		resultProcessor.updateTotal();
-		priorityProcessor.addPriority(testResult.getMethod().getTestClass().getName(),
-				method.getTestMethod().getMethodName());
+		if(method.isTestMethod()){
+			priorityProcessor.addPriority(testResult.getMethod().getTestClass().getName(), testResult.getMethod().getMethodName());
+			if (rulesProcessor.isExecutionAborted())
+				throw new SkipException("Rules Breached: Skipping this test case.");
+		}
 	}
 
 	@Override
 	public void afterInvocation(IInvokedMethod method, ITestResult testResult) {
-		if (testResult.getStatus() == ITestResult.SUCCESS) {
-			resultProcessor.updatePassed();
-		}else{
+		if(testResult.getStatus() == ITestResult.FAILURE){
 			int priority = priorityProcessor.getPriority(testResult.getMethod().getTestClass().getName(),
-					method.getTestMethod().getMethodName());
-			rulesProcessor.validatePriorityRule(method.getTestMethod().getQualifiedName(), priority);
-			resultProcessor.updateFailedTests(method.getTestMethod().getQualifiedName());
+					testResult.getMethod().getMethodName());
+			rulesProcessor.validatePriorityRule(testResult.getMethod().getQualifiedName(), priority);
+			resultProcessor.updateFailedTests(testResult.getMethod().getQualifiedName());
 		}
 	}
 

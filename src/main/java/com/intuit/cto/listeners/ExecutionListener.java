@@ -6,6 +6,7 @@ import org.testng.IExecutionListener;
 import com.intuit.cto.beans.PriorityList;
 import com.intuit.cto.beans.input.InstanceConfig;
 import com.intuit.cto.beans.rules.ControlRules;
+import com.intuit.cto.constants.HttpCodes;
 import com.intuit.cto.processors.PriorityProcessor;
 import com.intuit.cto.processors.ResultProcessor;
 import com.intuit.cto.processors.RulesProcessor;
@@ -15,8 +16,7 @@ import com.intuit.cto.utilties.PriorityListConverter;
 public class ExecutionListener implements IExecutionListener {
 	
 	private FileRegistry registry;
-	private static final String PROJECT_PRIORITIES = "project.priority";
-	private static final String PROJECT_RULES = "project.rules";
+	private static final String PROJECT_NAME = "project.name";
 	PriorityProcessor priorityProcessor = PriorityProcessor.getInstance();
 	ResultProcessor resultProcessor = ResultProcessor.getInstance();
 	RulesProcessor rulesProcessor = RulesProcessor.getInstance();
@@ -25,23 +25,22 @@ public class ExecutionListener implements IExecutionListener {
 	@Override
 	public void onExecutionStart() {
 		InstanceConfig config = new InstanceConfig();
-		registry = new FileRegistry(config);
-		PriorityList priorityList = registry.getPriorities(System.getProperty(PROJECT_PRIORITIES));
+		registry = new FileRegistry(config, System.getProperty(PROJECT_NAME));
+		PriorityList priorityList = registry.getPriorities();
 		priorityProcessor.setBasePriorities(priorityList);
-		ControlRules rules = registry.getRules(System.getProperty(PROJECT_RULES));
-		rulesProcessor.setRules(rules);
+		ControlRules rules = registry.getRules();
 		if(rules == null){
-			logger.error("NO RULES SET: Set the rules before proceeding...");
-			resultProcessor.finalize();
-			System.exit(1);
+			rulesProcessor.setExecutionAborted("NO RULES SET: Set rules for " + System.getProperty(PROJECT_NAME) + " before proceeding.");
+		}else{
+			rulesProcessor.setRules(rules);
 		}
 	}
 
 	@Override
 	public void onExecutionFinish() {
-		registry.setPriorities(PriorityListConverter.toList(priorityProcessor.getPriorities()));
-		resultProcessor.setExecutionCompleted(true);
 		resultProcessor.finalize();
+		if(registry.setPriorities(PriorityListConverter.toList(priorityProcessor.getPriorities())) != HttpCodes.SUCCESS)
+			logger.error("Failed to update priorities for " + System.getProperty(PROJECT_NAME));
 	}
 
 }

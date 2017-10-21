@@ -1,7 +1,7 @@
 {
-    "protocol": "http",
-    "fileServer":"localhost",
-    "port":"9090",
-    "priorityUri":"/configurator/methods",
-    "rulesUri":"/configurator/rules"
+    "protocol": "https",
+    "fileServer":"avishkar-e2e.platform.intuit.com",
+    "port":"",
+    "uploadUri":"/simulators/ofx/fileuploadapi/upload",
+    "downloadUri":"/simulators/ofx/fileuploadapi/download"
 }

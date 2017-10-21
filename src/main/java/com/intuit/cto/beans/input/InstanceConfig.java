@@ -15,8 +15,8 @@ public class InstanceConfig {
 	private static final String PROTOCOL = "protocol";
 	private static final String FILESERVER = "fileServer";
 	private static final String PORT = "port";
-	private static final String PRIORITYURI = "priorityUri";
-	private static final String RULESURI = "rulesUri";
+	private static final String UPLOAD_URL = "uploadUri";
+	private static final String DOWNLOAD_URL = "downloadUri";
 	
 	public InstanceConfig(){
 		ObjectMapper mapper = new ObjectMapper();
@@ -60,18 +60,18 @@ public class InstanceConfig {
 		return port;
 	}
 	
-	public String getPrioritiesURI(){
+	public String getUploadURI(){
 		String priorityUri = null;
-		if (instanceConfig != null && instanceConfig.has(PRIORITYURI)) {
-			priorityUri = instanceConfig.get(PRIORITYURI).textValue();
+		if (instanceConfig != null && instanceConfig.has(UPLOAD_URL)) {
+			priorityUri = instanceConfig.get(UPLOAD_URL).textValue();
         }
 		return priorityUri;
 	}
 
-	public String getRulesURI(){
+	public String getDownloadURI(){
 		String rulesUri = null;
-		if (instanceConfig != null && instanceConfig.has(RULESURI)) {
-			rulesUri = instanceConfig.get(RULESURI).textValue();
+		if (instanceConfig != null && instanceConfig.has(DOWNLOAD_URL)) {
+			rulesUri = instanceConfig.get(DOWNLOAD_URL).textValue();
         }
 		return rulesUri;
 	}
