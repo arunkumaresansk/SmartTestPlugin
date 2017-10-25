@@ -15,7 +15,7 @@ import io.restassured.specification.RequestSpecification;
 
 public class FileRegistry {
 
-	private static final String SMART_PLUGIN = "Smart Plugin";
+	private static final String SMART_PLUGIN = "smart-plugin";
 	private static final String FILE_NOT_FOUND = "FILENOTFOUND";
 	private final String projectPriorities;
 	private final String projectRules;
@@ -27,8 +27,8 @@ public class FileRegistry {
 		this.config = config;
 		RestAssured.baseURI = config.getProtocol() + "://" + config.getFileServer() + ":" + config.getPort();
 		this.projectName = projectName;
-		this.projectPriorities = projectName.toLowerCase() + ".priorities";
-		this.projectRules = projectName.toLowerCase() + ".rules";
+		this.projectPriorities = projectName + "-priorities.json";
+		this.projectRules = projectName + "-rules.json";
 	}
 
 	public PriorityList getPriorities() {

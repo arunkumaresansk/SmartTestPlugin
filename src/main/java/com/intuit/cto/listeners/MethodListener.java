@@ -20,7 +20,7 @@ public class MethodListener implements IInvokedMethodListener {
 		if(method.isTestMethod()){
 			priorityProcessor.addPriority(testResult.getMethod().getTestClass().getName(), testResult.getMethod().getMethodName());
 			if (rulesProcessor.isExecutionAborted())
-				throw new SkipException("Rules Breached: Skipping this test case.");
+				throw new SkipException("SKIPPING TEST: See the logs for more information.");
 		}
 	}
 

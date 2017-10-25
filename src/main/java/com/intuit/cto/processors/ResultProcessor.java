@@ -1,12 +1,10 @@
 package com.intuit.cto.processors;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.intuit.cto.beans.results.ResultMetrics;
 import com.intuit.cto.beans.results.TestNGResult;
-import com.intuit.cto.utilties.JsonSerializer;
 import com.intuit.cto.utilties.XMLSerializer;
 
 public class ResultProcessor {
@@ -33,7 +31,7 @@ public class ResultProcessor {
 		violatedRules.add(ruleName);
 	}
 
-	public void finalize() {
+	public ResultMetrics finalise() {
 		ResultMetrics result = new ResultMetrics();
 		TestNGResult testngResult = XMLSerializer
 				.toObject(System.getProperty("user.dir") + "/test-output/testng-results.xml", TestNGResult.class);
@@ -47,7 +45,7 @@ public class ResultProcessor {
 		result.setRulesViolated(violatedRules);
 		rulesProcessor.validatePercentageRule(Math.round(testngResult.getPassed() * 100 / result.getTotal()));
 		result.setJobStatus((rulesProcessor.isRuleBreached() || rulesProcessor.isExecutionAborted()) ? false : true);
-		JsonSerializer.toFile(new File("result.json"), result, ResultMetrics.class);
+		return result;
 	}
 
 	private ResultProcessor() {
