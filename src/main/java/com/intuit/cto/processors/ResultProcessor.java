@@ -44,7 +44,7 @@ public class ResultProcessor {
 		result.setFailedTests(failedTests);
 		result.setRulesViolated(violatedRules);
 		rulesProcessor.validatePercentageRule(Math.round(testngResult.getPassed() * 100 / result.getTotal()));
-		result.setJobStatus((rulesProcessor.isRuleBreached() || rulesProcessor.isExecutionAborted()) ? false : true);
+		result.setQualitySucceed((rulesProcessor.isRuleBreached() || rulesProcessor.isExecutionAborted()) ? false : true);
 		return result;
 	}
 

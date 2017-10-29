@@ -4,6 +4,9 @@ import java.util.List;
 
 public class ResultMetrics {
 
+	private String bu;
+	private String group;
+	private String projectJiraId;
 	private int total;
 	private int passed;
 	private int failed;
@@ -12,7 +15,8 @@ public class ResultMetrics {
 	private List<String> breachedTests;
 	private List<String> failedTests;
 	private List<String> rulesViolated;
-	private boolean jobStatus;
+	private String executionTime;
+	private boolean qualitySucceed;
 
 	public int getTotal() {
 		return total;
@@ -78,12 +82,44 @@ public class ResultMetrics {
 		this.rulesViolated = rulesViolated;
 	}
 
-	public boolean isJobStatus() {
-		return jobStatus;
+	public String getBu() {
+		return bu;
 	}
 
-	public void setJobStatus(boolean jobStatus) {
-		this.jobStatus = jobStatus;
+	public void setBu(String bu) {
+		this.bu = bu;
 	}
-	
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public String getProjectJiraId() {
+		return projectJiraId;
+	}
+
+	public void setProjectJiraId(String projectJiraId) {
+		this.projectJiraId = projectJiraId;
+	}
+
+	public String getExecutionTime() {
+		return executionTime;
+	}
+
+	public void setExecutionTime(String executionTime) {
+		this.executionTime = executionTime;
+	}
+
+	public boolean isQualitySucceed() {
+		return qualitySucceed;
+	}
+
+	public void setQualitySucceed(boolean qualitySucceed) {
+		this.qualitySucceed = qualitySucceed;
+	}
+
 }

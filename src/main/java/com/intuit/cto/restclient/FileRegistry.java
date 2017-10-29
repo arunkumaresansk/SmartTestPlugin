@@ -27,8 +27,8 @@ public class FileRegistry {
 		this.config = config;
 		RestAssured.baseURI = config.getProtocol() + "://" + config.getFileServer() + ":" + config.getPort();
 		this.projectName = projectName;
-		this.projectPriorities = projectName + "-priorities.json";
-		this.projectRules = projectName + "-rules.json";
+		this.projectPriorities = projectName.toLowerCase() + "-priorities.json";
+		this.projectRules = projectName.toLowerCase() + "-rules.json";
 	}
 
 	public PriorityList getPriorities() {
