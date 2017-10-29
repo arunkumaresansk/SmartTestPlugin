@@ -40,6 +40,7 @@ public class ResultProcessor {
 		result.setFailed(testngResult.getFailed());
 		result.setSkipped(testngResult.getSkipped());
 		result.setIgnored(testngResult.getIgnored());
+		result.setTotalDuration(testngResult.getSuite().getDuration());
 		result.setBreachedTests(breachedTests);
 		result.setFailedTests(failedTests);
 		result.setRulesViolated(violatedRules);

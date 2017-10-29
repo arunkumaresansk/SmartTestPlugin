@@ -12,10 +12,11 @@ public class ResultMetrics {
 	private int failed;
 	private int ignored;
 	private int skipped;
+	private int totalDuration;
 	private List<String> breachedTests;
 	private List<String> failedTests;
 	private List<String> rulesViolated;
-	private String executionTime;
+	private String executionStartTime;
 	private boolean qualitySucceed;
 
 	public int getTotal() {
@@ -106,20 +107,28 @@ public class ResultMetrics {
 		this.projectJiraId = projectJiraId;
 	}
 
-	public String getExecutionTime() {
-		return executionTime;
-	}
-
-	public void setExecutionTime(String executionTime) {
-		this.executionTime = executionTime;
-	}
-
 	public boolean isQualitySucceed() {
 		return qualitySucceed;
 	}
 
 	public void setQualitySucceed(boolean qualitySucceed) {
 		this.qualitySucceed = qualitySucceed;
+	}
+
+	public int getTotalDuration() {
+		return totalDuration;
+	}
+
+	public void setTotalDuration(int totalDuration) {
+		this.totalDuration = totalDuration;
+	}
+
+	public String getExecutionStartTime() {
+		return executionStartTime;
+	}
+
+	public void setExecutionStartTime(String executionStartTime) {
+		this.executionStartTime = executionStartTime;
 	}
 
 }

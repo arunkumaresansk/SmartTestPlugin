@@ -33,7 +33,7 @@ public class ExecutionListener implements IExecutionListener {
 	private final static Logger logger = Logger.getLogger(ExecutionListener.class);
 
 	public ExecutionListener() {
-		DateFormat formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss aa zzz yyyy");
+		DateFormat formatter = new SimpleDateFormat("EEE MMM dd yyyy hh:mm:ss aa zzz");
 		executionTime = formatter.format(System.currentTimeMillis());
 		projectName = System.getProperty(PROJECT_JIRA_ID);
 		buName = System.getProperty(BU_NAME);
@@ -64,7 +64,7 @@ public class ExecutionListener implements IExecutionListener {
 		result.setBu(buName);
 		result.setGroup(groupName);
 		result.setProjectJiraId(projectName);
-		result.setExecutionTime(executionTime);
+		result.setExecutionStartTime(executionTime);
 		JsonSerializer.toFile(new File(projectName.toLowerCase() + "-result.json"), result, ResultMetrics.class);
 		if (registry.setPriorities(PriorityListConverter.toList(priorityProcessor.getPriorities())) != HttpCodes.SUCCESS)
 			logger.error("Failed to update priorities for " + projectName);

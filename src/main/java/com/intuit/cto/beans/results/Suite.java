@@ -8,7 +8,7 @@ public class Suite {
 
 	@JacksonXmlProperty(localName = "name", isAttribute = true)
 	private String name;
-	@JacksonXmlProperty(localName = "duration", isAttribute = true)
+	@JacksonXmlProperty(localName = "duration-ms", isAttribute = true)
 	private int duration;
 	@JacksonXmlProperty(localName = "started-at", isAttribute = true)
 	private String startedAt;
@@ -20,7 +20,6 @@ public class Suite {
 	}
 
 	public Suite(String name, int duration, String startedAt, String finishedAt) {
-		super();
 		this.name = name;
 		this.duration = duration;
 		this.startedAt = startedAt;
