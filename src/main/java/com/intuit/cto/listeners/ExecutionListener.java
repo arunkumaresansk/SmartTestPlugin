@@ -1,8 +1,6 @@
 package com.intuit.cto.listeners;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
 import org.testng.IExecutionListener;
@@ -26,15 +24,15 @@ public class ExecutionListener implements IExecutionListener {
 	private static final String PROJECT_JIRA_ID = "project.jiraId";
 
 	private FileRegistry registry;
-	private String projectName, buName, groupName, executionTime;
+	private String projectName, buName, groupName;
+	private long executionStartTime;
 	PriorityProcessor priorityProcessor = PriorityProcessor.getInstance();
 	ResultProcessor resultProcessor = ResultProcessor.getInstance();
 	RulesProcessor rulesProcessor = RulesProcessor.getInstance();
 	private final static Logger logger = Logger.getLogger(ExecutionListener.class);
 
 	public ExecutionListener() {
-		DateFormat formatter = new SimpleDateFormat("EEE MMM dd yyyy hh:mm:ss aa zzz");
-		executionTime = formatter.format(System.currentTimeMillis());
+		executionStartTime = System.currentTimeMillis();
 		projectName = System.getProperty(PROJECT_JIRA_ID);
 		buName = System.getProperty(BU_NAME);
 		groupName = System.getProperty(GROUP_NAME);
@@ -64,7 +62,7 @@ public class ExecutionListener implements IExecutionListener {
 		result.setBu(buName);
 		result.setGroup(groupName);
 		result.setProjectJiraId(projectName);
-		result.setExecutionStartTime(executionTime);
+		result.setExecutionStartTime(executionStartTime);
 		JsonSerializer.toFile(new File(projectName.toLowerCase() + "-result.json"), result, ResultMetrics.class);
 		if (registry.setPriorities(PriorityListConverter.toList(priorityProcessor.getPriorities())) != HttpCodes.SUCCESS)
 			logger.error("Failed to update priorities for " + projectName);

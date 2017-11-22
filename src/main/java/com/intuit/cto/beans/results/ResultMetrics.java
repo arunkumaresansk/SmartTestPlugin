@@ -16,7 +16,7 @@ public class ResultMetrics {
 	private List<String> breachedTests;
 	private List<String> failedTests;
 	private List<String> rulesViolated;
-	private String executionStartTime;
+	private long executionStartTime;
 	private boolean qualitySucceed;
 
 	public int getTotal() {
@@ -123,11 +123,11 @@ public class ResultMetrics {
 		this.totalDuration = totalDuration;
 	}
 
-	public String getExecutionStartTime() {
+	public long getExecutionStartTime() {
 		return executionStartTime;
 	}
 
-	public void setExecutionStartTime(String executionStartTime) {
+	public void setExecutionStartTime(long executionStartTime) {
 		this.executionStartTime = executionStartTime;
 	}
 
